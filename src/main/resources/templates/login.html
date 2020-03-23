@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>兜兜转转铺子</title>
+		<link rel="stylesheet" href="css/layui.css">
+	</head>
+	<style>
+		#logo{
+			position: absolute;
+			left: 50%;
+			top: 90%; /*偏移*/
+			transform: translateY(-50%) translateX(-50%);
+		}
+		#login{
+			position: absolute;
+			width: 500px;
+			height: 400px;
+			left: 50%;
+			top: 50%; /*偏移*/
+			transform: translateY(-50%) translateX(-50%);
+		}
+		.f{
+			position: relative;
+			height: 80%;
+			width: 100%;
+			background-color: white;
+			top: 20px;
+			border-radius: 10px;
+			box-shadow:8px 8px 8px #220007 ;
+		}
+		#con{
+			position: relative;
+			border-radius: 10px;
+			width: 85%;
+			height: 70%;
+			background-color:  #E8E8E8;
+			top: 38px;
+			left: 7.5%;
+		}
+		#tit{
+			position: relative;
+			font-size: 20px;
+			top: 20px;
+			left: 193px;
+		}
+		.btn{
+			position: relative;
+			width: 260px;
+			background-color: #8c272b;
+			color: white;
+			left: 50px;
+		}
+	</style>
+	<body bgcolor="lavenderblush" style="overflow:hidden">
+
+		<div id="login">
+			<div id="from" class="f">
+				<span id="tit">兜兜转转铺子</span>
+				<div id="con">
+					<form action="#" th:action="@{/log}" method="post" class="layui-form" style="position: relative;left: 25px;top: 40px;">
+						<div class="layui-form-item">
+							<label class="layui-form-label">用户名</label>
+							<div class="layui-input-block">
+								<input type="text" name="name" class="layui-input" style="width: 200px;">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+							<div class="layui-input-block">
+								<input type="password" name="pwd"  class="layui-input" style="width: 200px;">
+							</div>
+						</div>
+						<button type="submit" class="layui-btn layui-btn-fluid btn">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;陆</button>
+						<label th:text="${msg}" style="position: relative;top: 40px;left: -127px;color: red;"></label>
+					</form>
+				</div>
+				<a onclick="reg()" style="position: relative;top: 47px;left: 337px;font-size: 10px;">还没有账号？注册一个. . . .</a>
+			</div>
+			<div id="reg" class="f" style="display: none;background-color: black;">
+				<span id="tit">注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</span>
+				<div id="con">
+					<form class="layui-form" th:action="@{/regUser}" method="post" style="position: relative;left: 25px;top: 40px;">
+						<div class="layui-form-item">
+							<label class="layui-form-label">用户名</label>
+							<div class="layui-input-block">
+								<input type="text" name="name" class="layui-input" style="width: 200px;">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+							<div class="layui-input-block">
+								<input type="password" name="pwd"  class="layui-input" style="width: 200px;">
+							</div>
+						</div>
+						<button type="submit" class="layui-btn layui-btn-fluid btn">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+					</form>
+				</div>
+				<a onclick="back()" style="position: relative;top: 47px;left: 432px;">返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
+			</div>
+		</div>
+		<div id="logo">
+			<span style="color: #9F9F9F;font-size: 12px;">订单查询管理系统</span>
+		</div>
+	</body>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/layui.js"></script>
+	<script>		
+			function reg(){
+				$("#from").attr("style","display:none;");
+				$("#reg").attr("style","display:block;");
+			}
+			
+			function back(){
+				$("#from").attr("style","display:block;");
+				$("#reg").attr("style","display:none;");
+			}
+	</script>
+</html>

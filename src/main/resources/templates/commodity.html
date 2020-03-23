@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="css/layui.css">
+	</head>
+	<body>
+		<div class="layui-form-item" style="position: absolute;z-index: 9999;top: 17px;padding-left: 30px;height: 10px;">
+			商品名称：
+			<div class="layui-inline">
+				<input class="layui-input"  id="sname" autocomplete="off">
+			</div>
+			<button class="layui-btn"  onclick="sel()" style="position: relative;top: -4px;">搜索</button>
+			<button class="layui-btn"  onclick="ins()" style="position: relative;top: -4px;">新增</button>
+		</div>
+		<table id="tab" lay-filter="user" class="layui-hide" style="position: relative;"></table>
+		</body>
+		<div id="add" style="display:none">
+			<form class="layui-form" style="position: relative;top: 10px;" id="for">
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品名称</label>
+					<div class="layui-input-block">
+						<input type="text" id="name" class="layui-input" style="width:200px" >
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品类型</label>
+					<div class="layui-input-block" style="width: 200px;">
+						<select id="type">
+							<option value=""></option>
+							<option value="食品">食品</option>
+							<option value="饮料">饮料</option>
+							<option value="服装">服装</option>
+							<option value="化妆品">化妆品</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品进价</label>
+					<div class="layui-input-block">
+						<input type="text"  id="jjia"  class="layui-input" style="width:200px" >
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品售价</label>
+					<div class="layui-input-block">
+						<input type="text"  id="sjia"  class="layui-input" style="width:200px" >
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">商品库存</label>
+					<div class="layui-input-block">
+						<input type="text"  id="num"  class="layui-input" style="width:200px" >
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd">修改</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
+		</body>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/layui.js"></script>
+		<script src="js/element.js"></script>
+		
+		<script th:inline="javascript">
+		
+			layui.use(['table','laydate'], function() {
+				var table = layui.table;
+				var laydate = layui.laydate;
+		
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#creatDate' //指定元素
+				});
+		
+				table.render({
+					elem: '#tab',
+					url: ''+/*[[@{/findComPage}]]*/+'', //数据接口https://www.layui.com/demo/table/user/?page=1&limit=30
+					page: true, //开启分页
+					cellMinWidth: 80,
+					height: 'full-80',
+					toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+					defaultToolbar: [
+						{ //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+							title: '刷新',
+							layEvent: 'LAYTABLE_TIPS',
+							icon: 'layui-icon-refresh'
+						}
+					],
+					limit: 20,
+					cols: [
+						[ //表头
+							{
+								type: 'checkbox',
+								fixed: 'left'
+							}
+							,{field: 'id', title: '商品ID',  sort: true}
+							, {
+							field: 'name',
+							title: '商品名称'
+						}, {
+							field: 'type',
+							title: '商品类型'
+						}, {
+							field: 'jjia',
+							title: '商品进价'
+						},{
+							field: 'sjia',
+							title: '商品售价'
+						},{
+							field: 'num',
+							title: '商品库存'
+						},{
+							field:'admin',
+							title:'添加人'
+						}
+		
+		
+							, {
+							title: '操作',
+							toolbar: '#barDemo',
+							width: 130
+						}
+						]
+					]
+				});
+		
+				//头工具栏事件
+				table.on('toolbar(user)', function(obj){
+					var check = table.checkStatus(obj.config.id);
+					var nocheck = table.cache;
+					switch(obj.event){
+							//自定义头工具栏右侧图标 - 提示
+						case 'LAYTABLE_TIPS':
+							layui.table.reload('tab', {
+								url: ''+/*[[@{/findComPage}]]*/+'',
+								toolbar: '#toolbarDemo',
+								page: {
+									curr: 1 //重新从第 1 页开始
+								}
+							});
+							break;
+					};
+				});
+		
+				//监听行工具事件
+				table.on('tool(user)', function(obj){
+					var data = obj.data;
+					//console.log(obj)
+					if(obj.event === 'del'){
+						layer.confirm('真的删除行么', function(index){
+							// obj.del();
+							//layer.msg(data.id)
+							layer.close(index);
+							$.ajax({
+								url:''+/*[[@{/delComById}]]*/+'',
+								type : "post",
+								dataType : "json",
+								data :  {
+									id : data.id
+								},
+								success:function (dat) {
+									if(dat.code=="1"){
+										obj.del();
+									}
+									layer.msg(dat.msg);
+								}
+							});
+						});
+					}else if(obj.event === 'upd'){
+						$("#name").val(data.name);
+						$("#jjia").val(data.jjia);
+						$("#sjia").val(data.sjia);
+						$("#num").val(data.num);
+						//$("#state").val();
+						//$("#state option[value='"+data.state+"']").attr("selected", true);
+						layer.open({
+							type: 1,
+							title: "修改",
+							area:['400px','450px'],
+							skin: 'layui-layer-rim', //加上边框
+							//area: ['420px', '240px'], //宽高
+							content: $("#add"),
+							btn: ['提交', '取消']
+							,btn1: function(index, layero){
+								$.ajax({
+									url:''+/*[[@{/updateCom}]]*/+'',
+									type : "post",
+									dataType : "json",
+									data :  {
+										id:data.id,
+										name:$("#name").val(),
+										type:$("#type option:selected").val(),
+										jjia:$("#jjia").val(),
+										sjia:$("#sjia").val(),
+										num:$("#num").val(),
+										admin:data.admin
+									},
+									success:function (dat) {
+										if(dat.code=="0"){
+											layer.msg(dat.msg);
+											$('#for')[0].reset();
+											layer.closeAll();
+										}
+										layer.msg(dat.msg);
+									}
+								});
+							},
+							btn2: function(index, layero){
+								$('#for')[0].reset();
+								layer.closeAll();
+							}
+						});
+					}
+				});
+		
+			});
+		
+			function sel(){
+				var name = $("#sname").val();
+				layui.table.reload('tab', {
+					url: ''+/*[[@{/findCom}]]*/+'',
+					toolbar: '#toolbarDemo',
+					where: { //设定异步数据接口的额外参数，任意设
+						name: name
+					}
+					,page: {
+						curr: 1 //重新从第 1 页开始
+					}
+				}); //只重载数据
+			}
+		
+			function ins(){
+				//$("#state option[value='']").attr("selected", true);
+				layer.open({
+					type: 1,
+					title: "新增",
+					area:['400px','450px'],
+					skin: 'layui-layer-rim', //加上边框
+					//area: ['420px', '240px'], //宽高
+					content: $("#add"),
+					btn: ['提交', '取消']
+					,btn1: function(index, layero){
+						$.ajax({
+							url:''+/*[[@{/insertCom}]]*/+'',
+							type : "post",
+							dataType : "json",
+							data :  {
+								name:$("#name").val(),
+								sjia:$("#sjia").val(),
+								type:$("#type option:selected").val(),
+								jjia:$("#jjia").val(),
+								num:$("#num").val()
+							},
+							success:function (dat) {
+								if(dat.code=="0"){
+									layer.msg(dat.msg);
+									$('#for')[0].reset();
+									layer.closeAll();
+								}
+								layer.msg(dat.msg);
+							}
+						});
+					},
+					btn2: function(index, layero){
+						$('#for')[0].reset();
+						layer.closeAll();
+					}
+				});
+			}
+		</script>
+</html>

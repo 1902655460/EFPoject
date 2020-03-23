@@ -1,0 +1,15 @@
+com\dindan\gift\GiftMapper.class
+com\dindan\xq\XqMapper.class
+com\dindan\SpringBoot.class
+com\dindan\MyBatiesPlusConfig.class
+com\dindan\gift\Gift.class
+com\dindan\xq\XqService.class
+com\dindan\gift\VContorn.class
+com\dindan\user\UserMapper.class
+com\dindan\user\UserService.class
+com\dindan\xq\XqContorn.class
+com\dindan\gift\GiftService.class
+com\dindan\user\UserController.class
+com\dindan\xq\Xq.class
+com\dindan\DdPojectApplication.class
+com\dindan\user\User.class
