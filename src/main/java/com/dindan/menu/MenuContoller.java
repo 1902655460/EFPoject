@@ -19,7 +19,9 @@ public class MenuContoller {
     @ResponseBody
     @RequestMapping("/init")
     public Map<String, Object> init(){
-        return service.init();
+        Map<String,Object> map = service.init();
+        map.put("menuInfo",service.menu());
+        return map;
     }
 
 }
