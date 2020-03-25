@@ -11,7 +11,7 @@
     <groupId>com.dindan</groupId>
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>EF</name>
+    <name>EFPoject</name>
     <description>英孚库存管理系统</description>
     <packaging>war</packaging>
 
@@ -73,7 +73,7 @@
 
     <build>
         <!--项目打包名-->
-        <finalName>EF</finalName>
+        <finalName>EFPoject</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

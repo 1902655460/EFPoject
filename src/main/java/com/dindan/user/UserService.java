@@ -31,6 +31,7 @@ public class UserService {
                 map.put("code",0);
                 Cookie cookie = new Cookie(user.getName(),user.getStute().toString());
                 cookie.setPath("/");
+                cookie.setMaxAge(3600);
                 response.addCookie(cookie);
             }else{
                 map.put("code",1);
