@@ -13,4 +13,6 @@ public class Gift {
     private Integer id;
     private String name;
     private Integer number;
+    private String cdate;
+    private String udate;
 }
