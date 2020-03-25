@@ -22,9 +22,10 @@ public class MenuContoller {
      */
     @ResponseBody
     @RequestMapping("/init")
-    public Map<String, Object> init(){
+    public Map<String, Object> init(int stute){
+        System.out.println(stute);
         Map<String,Object> map = service.init();
-        map.put("menuInfo",service.menu());
+        map.put("menuInfo",service.menu(stute));
         return map;
     }
 

@@ -36,11 +36,17 @@ public class MenuService {
     }
 
     //获取菜单接口
-    public List<Map<String,Object>> menu(){
+    public List<Map<String,Object>> menu(int stute){
         map = new HashMap<>(0);
         //查询出所有的头部模块
         List<Map<String,Object>> listMap = new ArrayList<>(0);
-        List<Menu> list = mapper.selectList(new QueryWrapper<Menu>().eq("pid",0));
+        List<Menu> list = new ArrayList<>(0);
+        if(stute==0){
+            list = mapper.selectList(new QueryWrapper<Menu>().eq("pid",0));
+        }else{
+            list = mapper.selectList(new QueryWrapper<Menu>().eq("id",stute));
+        }
+
         for (Menu menu : list){
             Map<String,Object> lmap = new HashMap<>(0);
             lmap.put("title",menu.getTitle());
