@@ -22,9 +22,23 @@ public class UserController {
     private UserService service;
 
 
+    /**
+     * 登录接口
+     * @param request
+     * @param response
+     * @param name
+     * @param pwd
+     * @return
+     */
     @RequestMapping("/login")
     @ResponseBody
     public Object login(HttpServletRequest request,HttpServletResponse response, String name, String pwd){
         return service.login(request,response,name,pwd);
+    }
+
+    @RequestMapping("/logout")
+    @ResponseBody
+    public Object logout(HttpServletRequest request,HttpServletResponse response,String name){
+        return service.logout(request,response,name);
     }
 }

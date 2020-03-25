@@ -42,4 +42,21 @@ public class UserService {
         }
         return map;
     }
+
+    public Object logout(HttpServletRequest request,HttpServletResponse response,String name){
+        map = new HashMap<>(0);
+        Cookie[] cookies = request.getCookies();//获取cookie数组
+        for (Cookie c:cookies) {   //遍历cookie
+
+            if (c.getName().equals(name)) {
+                Cookie cookie = new Cookie(c.getName(), null);//删除前必须要new 一个valu为空；
+                cookie.setPath("/");//路径要相同
+                cookie.setMaxAge(0);//生命周期设置为0
+                response.addCookie(cookie);
+                break;
+            }
+        }
+        map.put("code",0);
+        return map;
+    }
 }

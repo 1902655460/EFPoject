@@ -16,6 +16,10 @@ public class MenuContoller {
     private MenuService service;
 
 
+    /**
+     * 页面初始化接口
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/init")
     public Map<String, Object> init(){

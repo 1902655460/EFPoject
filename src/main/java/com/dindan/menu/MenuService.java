@@ -17,14 +17,17 @@ public class MenuService {
 
     Map<String,Object> map;
 
+    //index初始化接口
     public Map<String, Object> init(){
         map = new HashMap<>(0);
         Map<String,Object> map2 = new HashMap<>(0);
-        map2.put("title","首页");
-        map2.put("href","http://www.baidu.com/");
+        Menu m2 = mapper.selectOne(new QueryWrapper<Menu>().eq("pid",-1));
+        map2.put("title",m2.getTitle());
+        map2.put("href",m2.getHref());
         Map<String,Object> map3 = new HashMap<>(0);
-        map3.put("title","E  F");
-        map3.put("image","images/eflog.png");
+        Menu m3 = mapper.selectOne(new QueryWrapper<Menu>().eq("pid",-2));
+        map3.put("title",m3.getTitle());
+        map3.put("image",m3.getIcon());
         map3.put("href","");
 
         map.put("homeInfo", map2);
@@ -32,6 +35,7 @@ public class MenuService {
         return map;
     }
 
+    //获取菜单接口
     public List<Map<String,Object>> menu(){
         map = new HashMap<>(0);
         //查询出所有的头部模块
