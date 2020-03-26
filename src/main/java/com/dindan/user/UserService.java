@@ -28,16 +28,16 @@ public class UserService {
         try{
             User user = mapper.selectOne(new QueryWrapper<User>().eq("name",name).eq("pwd",pwd));
             if(user != null){
-                map.put("code",0);
-                Cookie cookie = new Cookie(user.getName(),user.getStute().toString());
-                cookie.setPath("/");
-                cookie.setMaxAge(3600);
-                response.addCookie(cookie);
+                map.put("code",user.getStute().toString());
+               // Cookie cookie = new Cookie(user.getName(),user.getStute().toString());
+                //cookie.setPath("/");
+               // cookie.setMaxAge(3600);
+               // response.addCookie(cookie);
             }else{
-                map.put("code",1);
+                map.put("code",-1);
             }
         }catch (Exception e){
-            map.put("code",4);
+            map.put("code",-1);
             //e.printStackTrace();
         }
         return map;
