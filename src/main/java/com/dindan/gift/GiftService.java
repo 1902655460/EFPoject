@@ -1,9 +1,10 @@
 package com.dindan.gift;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dindan.xq.Xq;
-import com.dindan.xq.XqMapper;
+import com.dindan.giftxq.Xq;
+import com.dindan.giftxq.XqMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +26,10 @@ public class GiftService {
 
     Map<String,Object> map;
 
-    public Map selectPage(int limit,int page){
+    public Map selectPage(int limit,int page,int xid){
         map = new HashMap<>(0);
         Page<Gift> pa = new Page<Gift>(page,limit);
-        IPage<Gift> iPage = mapper.selectPage(pa,null);
+        IPage<Gift> iPage = mapper.selectPage(pa,new QueryWrapper<Gift>().eq("xid",xid));
         List<Gift> list = iPage.getRecords();
         map.put("data",list);
         map.put("count",iPage.getTotal());
@@ -37,16 +38,20 @@ public class GiftService {
     }
 
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Map insertGift(String name,int number){
+    public Map insertGift(String name,int number,String cname,int xid){
         map = new HashMap<>(0);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try{
             Gift g = new Gift();
             g.setName(name);
             g.setNumber(number);
+            g.setCdate(sdf.format(new Date()));
+            g.setUdate(sdf.format(new Date()));
+            g.setXid(xid);
             mapper.insert(g);
             Xq x = new Xq();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             x.setDate(sdf.format(new Date()));
+            x.setSa(cname);
             x.setNumber(number);
             x.setGid(g.getId());
             xqMapper.insert(x);
@@ -62,6 +67,7 @@ public class GiftService {
     public Map delById(int id) {
         map = new HashMap<>(0);
         int i = mapper.deleteById(id);
+        xqMapper.delete(new QueryWrapper<Xq>().eq("gid",id));
         map.put("code",i);
         return map;
     }

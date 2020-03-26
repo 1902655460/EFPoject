@@ -15,4 +15,5 @@ public class Gift {
     private Integer number;
     private String cdate;
     private String udate;
+    private Integer xid;
 }

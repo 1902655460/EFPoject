@@ -1,7 +1,6 @@
-package com.dindan.xq;
+package com.dindan.giftxq;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dindan.gift.Gift;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

@@ -8,29 +8,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @CrossOrigin
-public class VContorn {
+public class GiftController {
 
     @Autowired
     private GiftService service;
 
-    @RequestMapping("/gift")
-    public String Gift(){
-        return "/gift.html";
-    }
-
-    @RequestMapping("selectPage")
+    @RequestMapping("selectGiftPage")
     @ResponseBody
-    public Object selectPage(int page,int limit){
-        return service.selectPage(limit,page);
+    public Object selectPage(int page,int limit,int xid){
+        return service.selectPage(limit,page,xid);
     }
 
     @RequestMapping("insertGift")
     @ResponseBody
-    public Object insertGift(String name,int number){
-        return service.insertGift(name,number);
+    public Object insertGift(String name,int number,String cname,int xid){
+        return service.insertGift(name,number,cname,xid);
     }
 
-    @RequestMapping("delById")
+    @RequestMapping("delGiftById")
     @ResponseBody
     public Object delById(int id){
         return service.delById(id);

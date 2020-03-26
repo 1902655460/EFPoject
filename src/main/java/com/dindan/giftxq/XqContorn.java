@@ -1,6 +1,5 @@
-package com.dindan.xq;
+package com.dindan.giftxq;
 
-import com.dindan.gift.GiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,25 +13,25 @@ public class XqContorn {
     @Autowired
     private XqService service;
 
+    @RequestMapping("selectGiftXQ")
     @ResponseBody
-    @RequestMapping("/se")
-    public Object Gift(int page,int limit){
-        return service.selectPage(limit,page);
+    public Object selectPage(int page,int limit,int gid){
+        return service.selectPage1(limit,page,gid);
     }
 
-    @RequestMapping("selectXQPage")
+    @RequestMapping("ckGiftXQ")
     @ResponseBody
-    public Object selectPage(int page,int limit,int tid){
-        return service.selectPage1(limit,page,tid);
+    public Object ckGiftXQ(String name,int number,String tname,int gid,String sa){
+        return service.insertXQ(name, -number, tname, gid,sa);
     }
 
-    @RequestMapping("insertXQ")
+    @RequestMapping("rkGiftXQ")
     @ResponseBody
-    public Object insertXQ(String name,int number,String tname,int gid,String sa){
-        return service.insertXQ(name, number, tname, gid,sa);
+    public Object rkGiftXQ(int number,int gid,String sa){
+        return service.insertXQ(null, number, null, gid,sa);
     }
 
-    @RequestMapping("delXQById")
+    @RequestMapping("delGiftXQ")
     @ResponseBody
     public Object delXQById(int id){
         return service.delXQById(id);

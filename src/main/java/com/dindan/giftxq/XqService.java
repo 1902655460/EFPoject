@@ -1,4 +1,4 @@
-package com.dindan.xq;
+package com.dindan.giftxq;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,21 +27,10 @@ public class XqService {
 
     Map<String,Object> map;
 
-    public Map selectPage(int limit,int page){
+    public Map selectPage1(int limit,int page,int gid){
         map = new HashMap<>(0);
         Page<Xq> pa = new Page<Xq>(page,limit);
-        IPage<Xq> iPage = mapper.selectPage(pa,null);
-        List<Xq> list = iPage.getRecords();
-        map.put("data",null);
-        map.put("count",0);
-        map.put("code",0);
-        return map;
-    }
-
-    public Map selectPage1(int limit,int page,int tid){
-        map = new HashMap<>(0);
-        Page<Xq> pa = new Page<Xq>(page,limit);
-        IPage<Xq> iPage = mapper.selectPage(pa,new QueryWrapper<Xq>().eq("gid",tid));
+        IPage<Xq> iPage = mapper.selectPage(pa,new QueryWrapper<Xq>().eq("gid",gid));
         List<Xq> list = iPage.getRecords();
         map.put("data",list);
         map.put("count",iPage.getTotal());
@@ -53,8 +43,9 @@ public class XqService {
         map = new HashMap<>(0);
         try{
             Xq x = new Xq();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            x.setDate(sdf.format(new Date()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String da = sdf.format(new Date());
+            x.setDate(da);
             x.setName(name);
             x.setNumber(number);
             x.setTname(tname);
@@ -63,6 +54,7 @@ public class XqService {
             mapper.insert(x);
             Gift gi = giftMapper.selectById(gid);
             gi.setNumber(gi.getNumber()+number);
+            gi.setUdate(da);
             giftMapper.updateById(gi);
             map.put("code",0);
             map.put("msg","新增成功！");
@@ -74,11 +66,14 @@ public class XqService {
     }
 
     public Map delXQById(int id) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String da = sdf.format(new Date());
         map = new HashMap<>(0);
         Xq xq = mapper.selectById(id);
         int i = mapper.deleteById(id);
         Gift g = giftMapper.selectById(xq.getGid());
         g.setNumber(g.getNumber()-xq.getNumber());
+        g.setUdate(da);
         giftMapper.updateById(g);
         map.put("code",i);
         return map;
