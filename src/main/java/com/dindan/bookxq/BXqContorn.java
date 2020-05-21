@@ -21,8 +21,8 @@ public class BXqContorn {
 
     @RequestMapping("ckBookXQ")
     @ResponseBody
-    public Object ckGiftXQ(String name,int number,String tname,int gid,String sa){
-        return service.insertXQ(name, -number, tname, gid,sa);
+    public Object ckGiftXQ(String name,String tname,int gid,String sa){
+        return service.insertckXQ(name, tname, gid,sa);
     }
 
     @RequestMapping("rkBookXQ")

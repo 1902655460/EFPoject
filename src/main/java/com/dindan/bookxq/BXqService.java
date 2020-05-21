@@ -38,6 +38,37 @@ public class BXqService {
     }
 
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Map insertckXQ(String name,String tname,int gid,String sa){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String da = sdf.format(new Date());
+        map = new HashMap<>(0);
+        try{
+            String[] na = name.split("-");
+            for(int i=0;i<na.length;i++){
+                BXq x = new BXq();
+                x.setDate(da);
+                x.setName(na[i]);
+                x.setNumber(-1);
+                x.setTname(tname);
+                x.setGid(gid);
+                x.setSa(sa);
+                mapper.insert(x);
+            }
+
+            Book gi = giftMapper.selectById(gid);
+            gi.setNumber(gi.getNumber()-na.length);
+            gi.setUdate(da);
+            giftMapper.updateById(gi);
+            map.put("code",0);
+            map.put("msg","新增成功！");
+        }catch (Exception e){
+            map.put("code",1);
+            map.put("msg","程序错误，请联系十忆少女的梦！");
+        }
+        return map;
+    }
+
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public Map insertXQ(String name,int number,String tname,int gid,String sa){
         map = new HashMap<>(0);
         try{
